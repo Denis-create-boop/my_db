@@ -1,7 +1,7 @@
 import mysql.connector
 # crete database my_test_db
 
-SECRET_KEY = 'LiZa04031994'
+SECRET_KEY = 'some_key'
 db = mysql.connector.connect(host="localhost", 
                                database="my_test_db", user="root", 
                                password=SECRET_KEY)
@@ -51,17 +51,10 @@ db.commit()
 
 # добавил специальность для второго работника
 query = """UPDATE worckers SET 
-            profession = 'frontent developer' 
+            profession = 'frontend developer' 
             WHERE id = 2;"""
 
 cursor.execute(query)
 db.commit()
 
-query = """SELECT * FROM worckers;"""
-cursor.execute(query)
 
-
-
-
-for row in cursor:
-    print(row)
