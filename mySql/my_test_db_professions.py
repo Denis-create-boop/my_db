@@ -1,9 +1,11 @@
 import mysql.connector
+from main_my_test_db import SECRET_KEY
 # crete database my_test_db
 
-SECRET_KEY = 'some_key'
+
 db = mysql.connector.connect(host="localhost", 
-                               database="my_test_db", user="root", 
+                               database="my_test_db", 
+                               user="root", 
                                password=SECRET_KEY)
 
 
@@ -22,7 +24,7 @@ cursor.execute(query)
 db.commit()
 
 
-# добавил провессии в таблицу
+# добавил профессии в таблицу
 query = """INSERT INTO professions (id, profession, floor)
                 VALUES (1, 'backend developer', 2),
                 (2, 'frontend developer', 3),
@@ -30,6 +32,9 @@ query = """INSERT INTO professions (id, profession, floor)
                 (4, 'software tester', 4);
         """
 
+
+
 cursor.execute(query)
 db.commit()
+
 

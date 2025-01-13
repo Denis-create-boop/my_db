@@ -1,7 +1,9 @@
 import mysql.connector
+from main_my_test_db import SECRET_KEY
 # crete database my_test_db
 
-SECRET_KEY = 'some_key'
+
+
 db = mysql.connector.connect(host="localhost", 
                                database="my_test_db", user="root", 
                                password=SECRET_KEY)
