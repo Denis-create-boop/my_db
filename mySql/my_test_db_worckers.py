@@ -20,7 +20,7 @@ class Worckers:
         self.cursor.execute(query)
         db.commit()
 
-
+    # добавляем сотрудников
     def write(self, name, first_name, address, phone, profession):
         self.create()
         query = """INSERT INTO worckers (id, name, first_name, address, phone, profession) 
