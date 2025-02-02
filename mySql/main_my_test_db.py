@@ -1,8 +1,8 @@
 
-from my_test_db_worckers import Worckers
+from worckers import Worcker
 from professions import Profession
 
-obj_worck = Worckers()
+obj_worck = Worcker()
 
 
 obj_prof = Profession()
