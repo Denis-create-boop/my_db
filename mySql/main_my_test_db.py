@@ -1,4 +1,3 @@
-
 from worckers import Worcker
 from professions import Profession
 
@@ -8,17 +7,16 @@ obj_worck = Worcker()
 obj_prof = Profession()
 
 
-def worcker():
-    pass
-
 def main():
     while True:
-        print(f"""Здравствуйте, добро пожаловать в бот помошник с базой данных
+        print(
+            f"""Здравствуйте, добро пожаловать в бот помошник с базой данных
               Выберите команду:
               1 - Работа с профессиями
-              2 - Работа с работниками""")
+              2 - Работа с работниками"""
+        )
         print("Введите номер команды или её название")
-        
+
         answer = input()
         if int(answer) == 1 or answer.lower() == "работа с профессиями":
             step = obj_prof.prof()
@@ -26,7 +24,9 @@ def main():
                 break
 
         elif int(answer) == 2 or answer.lower() == "работа с работниками":
-            worcker()
+            step = obj_worck.work()
+            if step == 13:
+                break
 
 
 if __name__ == "__main__":

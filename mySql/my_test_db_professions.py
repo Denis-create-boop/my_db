@@ -34,12 +34,18 @@ class Professions:
             else:
                 return int(row[0]) + 1
 
+
     # получаем количество сотрудников
     def get_amount(self, prof):
         query = """SELECT amount FROM professions WHERE profession = %s"""
         self.cursor.execute(query, (prof,))
         for row in self.cursor:
             return row
+        
+    def change_amount(self, amount, prof):
+        query = """UPDATE professions SET amount=%s WHERE profession=%s"""
+        self.cursor.execute(query, (amount, prof))
+        db.commit()
 
     # смотрим все что есть в таблице
     def show_all(self):
@@ -57,14 +63,17 @@ class Professions:
         return ls_prof
 
     # записываем новую профессиию
-    def write(self, prof):
+    def write(self, prof, am=None):
         self.create()
         id = self.get_id()
-        amount = self.get_amount(prof)
-        if amount is None:
-            amount = 0
+        if not am:
+            amount = self.get_amount(prof)
+            if amount is None:
+                amount = 0
+            else:
+                amount = int(amount[0]) + 1
         else:
-            amount = int(amount[0]) + 1
+            amount = am
         ls_prof = self.show_profession()
 
         if prof not in ls_prof or ls_prof is None:

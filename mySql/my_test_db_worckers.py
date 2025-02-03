@@ -4,8 +4,11 @@ from my_test_db_professions import db
 
 
 class Worckers:
-    def __init__(self):
+    def __init__(self, id=None, name=None, first_name=None):
         self.cursor = db.cursor()
+        self.id = id
+        self.name = name
+        self.first_name = first_name
 
     # создал таблицу worckers
     def create_table(self):
@@ -21,44 +24,52 @@ class Worckers:
         """
         self.cursor.execute(query)
         db.commit()
+        query = """SELECT MAX(id) FROM worckers"""
+        self.cursor.execute(query)
+        for row in self.cursor:
+            return row[0]
 
     # добавляем сотрудников
-    def write_worcker(
-        self,
-        name=None,
-        first_name=None,
-        address=None,
-        phone=None,
-        profession=None,
-        status=None,
-    ):
-        self.create_table()
+    def add_worcker(self, address=None, phone=None, profession=None, status=None,):
+
+        id = self.create_table()
+        if id is None:
+            id = 1
+        else:
+            id += 1
+
         query = """INSERT INTO worckers (id, name, first_name, address, phone, profession, status) 
         VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-        ls_write = (1, name, first_name, address, phone, profession, status)
+        ls_write = (id, self.name, self.first_name, address, phone, profession, status)
         self.cursor.execute(query, ls_write)
         db.commit()
 
     # show all worcker
     def show_worckers(self):
+        query = """SELECT name, first_name FROM worckers"""
+        self.cursor.execute(query)
+        return self.cursor
+
+
+    def show_all(self):
         query = """SELECT * FROM worckers"""
         self.cursor.execute(query)
         return self.cursor
 
     # change worcker's profession
     def change_worcker_profession(
-        self, id=None, name=None, first_name=None, profession=None
+        self, profession=None
     ):
-        if id:
+        if self.id:
             query = """UPDATE worckers SET profession = %s WHERE id=%s"""
             self.cursor.execute(
                 query,
                 (
                     profession,
-                    id,
+                    self.id,
                 ),
             )
-        elif name and first_name:
+        elif self.name and self.first_name:
             query = (
                 """UPDATE worckers SET profession=%s WHERE name=%s AND first_name=%s"""
             )
@@ -66,94 +77,167 @@ class Worckers:
                 query,
                 (
                     profession,
-                    name,
-                    first_name,
+                    str(self.name).capitalize(),
+                    str(self.first_name).capitalize(),
                 ),
             )
         db.commit()
 
-    def change_worcker_name(self, id=None, name=None, first_name=None, new_name=None):
-        if id:
+    # change name
+    def change_worcker_name(self, new_name=None):
+        if self.id:
             query = """UPDATE worckers SET name=%s WHERE id=%s"""
             self.cursor.execute(
                 query,
                 (
-                    new_name,
-                    id,
+                    str(new_name).capitalize(),
+                    self.id,
                 ),
             )
 
-        elif name and first_name:
+        elif self.name and self.first_name:
             query = """UPDATE worckers SET name=%s WHERE name=%s AND first_name=%s"""
             self.cursor.execute(
                 query,
                 (
-                    new_name,
-                    name,
-                    first_name,
+                    str(new_name).capitalize(),
+                    str(self.name).capitalize(),
+                    str(self.first_name).capitalize(),
                 ),
             )
 
         db.commit()
 
+    #change first_name
     def change_worcker_first_name(
-        self, id=None, name=None, first_name=None, new_first_name=None
+        self, new_first_name=None
     ):
-        if id:
+        if self.id:
             query = """UPDATE worckers SET first_name=%s WHERE id=%s"""
             self.cursor.execute(
                 query,
                 (
-                    new_first_name,
-                    id,
+                    str(new_first_name).capitalize(),
+                    self.id,
                 ),
             )
 
-        elif name and first_name:
+        elif self.name and self.first_name:
             query = (
                 """UPDATE worckers SET first_name=%s WHERE name=%s AND first_name=%s"""
             )
             self.cursor.execute(
                 query,
                 (
-                    new_first_name,
-                    name,
-                    first_name,
+                    str(new_first_name).capitalize(),
+                    str(self.name).capitalize(),
+                    str(self.first_name).capitalize(),
                 ),
             )
 
         db.commit()
 
-    def change_worcker_address(self):
-        pass
+    #change address
+    def change_worcker_address(self, new_address=None):
+        if self.id:
+            query = """UPDATE worckers SET address=%s WHERE id=%s"""
+            self.cursor.execute(query, (new_address, self.id,))
+        elif self.name and self.first_name:
+            query = """UPDATE worckers SET address=%s WHERE name=%s AND first_name=%s"""
+            self.cursor.execute(
+                query, 
+                (
+                    new_address, 
+                    str(self.name).capitalize(), 
+                    str(self.first_name).capitalize()
+                )
+            )
+        db.commit()
 
-    def add_worcker_address(self):
-        pass
-
+    # delete address
     def del_worcker_address(self):
-        pass
+        if self.id:
+            query = """UPDATE worckers SET address=None WHERE id=%s"""
+            self.cursor.execute(query, (self.id,))
+        elif self.name and self.first_name:
+            query = """UPDATE worckers SET address=None WHERE name=%s AND first_name=%s"""
+            self.cursor.execute(query, (str(self.name).capitalize(), str(self.first_name).capitalize(),))
+        db.commit()
 
-    def change_worcker_phone(self):
-        pass
+    # change phone
+    def change_worcker_phone(self, phone):
+        if self.id:
+            query = """UPDATE worckers SET phone=%s WHERE id=%s"""
+            self.cursor.execute(query, (phone, self.id,))
+        elif self.name and self.first_name:
+            query = (
+                """UPDATE worckers SET phone=%s WHERE name=%s AND first_name=%s"""
+            )
+            self.cursor.execute(
+                query,
+                (
+                    phone,
+                    str(self.name).capitalize(),
+                    str(self.first_name).capitalize(),
+                ),
+            )
+        db.commit()
 
-    def add_worcker_phone(self):
-        pass
-
+    # delete phone
     def del_worcker_phone(self):
-        pass
+        if self.id:
+            query = """UPDATE worckers SET phone=None WHERE id=%s"""
+            self.cursor.execute(query, (self.id,))
+        elif self.name and self.first_name:
+            query = (
+                """UPDATE worckers SET phone=None WHERE name=%s AND first_name=%s"""
+            )
+            self.cursor.execute(
+                query,
+                (
+                    str(self.name).capitalize(),
+                    str(self.first_name).capitalize(),
+                ),
+            )
+        db.commit()
 
-    def change_worcker_status(self):
-        pass
+    #change status
+    def change_worcker_status(self, status):
+        if self.id:
+            query = """UPDATE worckers SET status=%s WHERE id=%s"""
+            self.cursor.execute(
+                query,
+                (
+                    status,
+                    self.id,
+                ),
+            )
+        elif self.name and self.first_name:
+            query = """UPDATE worckers SET status=%s WHERE name=%s AND first_name=%s"""
+            self.cursor.execute(
+                query,
+                (
+                    str(status).lower(),
+                    str(self.name).capitalize(),
+                    str(self.first_name).capitalize(),
+                ),
+            )
+        db.commit()
 
+    # delete worcker
     def del_worcker(self):
-        pass
-
-
-p = Worckers()
-# p.change_worcker_profession(name='Petya', first_name='Vass', profession='develop')
-# p.change_worcker_name(name='Denis', first_name='Vass', new_name='Petya')
-
-
-d = p.show_worckers()
-for row in d:
-    print(row)
+        if self.id:
+            query = """DELETE FROM worckers WHERE id=%s"""
+            self.cursor.execute(query, (self.id,))
+        elif self.name and self.first_name:
+            query = (
+                """DELETE FROM worckers WHERE name=%s AND first_name=%s"""
+            )
+            self.cursor.execute(
+                query,
+                (
+                    self.name,
+                    self.first_name,
+                ),
+            )
+        db.commit()
