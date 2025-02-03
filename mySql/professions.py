@@ -59,7 +59,7 @@ class Profession:
             elif int(answer) == 5 or answer.lower() == "посмотреть все данные таблицы":
                 for row in self.obj_prof.show_all():
                     print(
-                        f"id: {row[0]}, профессия:\n{row[1]},\nколичество сотрудников: {row[2]}"
+                        f"id: {row[0]},\nпрофессия: {row[1]},\nколичество сотрудников: {row[2]}"
                     )
                     print("--------------------------")
                     print()

@@ -3,7 +3,15 @@ from my_test_db_worckers import Worckers
 
 class Worcker:
 
-    def __init__(self, name=None, first_name=None, address=None, phone=None, profession=None, status=None):
+    def __init__(
+        self,
+        name=None,
+        first_name=None,
+        address=None,
+        phone=None,
+        profession=None,
+        status=None,
+    ):
         self.id = 0
         self.name = name
         self.first_name = first_name
@@ -37,6 +45,7 @@ class Worcker:
             if profession:
                 self.profession = profession
                 from my_test_db_professions import Professions
+
                 obj = Professions()
                 prof = obj.show_profession()
                 if profession in prof:
@@ -47,22 +56,24 @@ class Worcker:
                 else:
                     obj.write(profession, 1)
 
-
             print()
             print("Введите статус работника (необязательно)")
             status = input()
             if status:
                 self.status = status
+
         asc(self)
 
         obj_worcker = Worckers(self.id, name=self.name, first_name=self.first_name)
         obj_worcker.add_worcker(
-            address=self.address, 
-            phone=self.phone, 
-            profession=self.profession, 
-            status=self.status
+            address=self.address,
+            phone=self.phone,
+            profession=self.profession,
+            status=self.status,
         )
-        print(f"Работник:\nИмя: {self.name}\nФамилия: {self.first_name}\nУспешно добавлен")
+        print(
+            f"Работник:\nИмя: {self.name}\nФамилия: {self.first_name}\nУспешно добавлен"
+        )
 
     def show_all(self):
         obj_worcker = Worckers(self.id, name=self.name, first_name=self.first_name)
@@ -75,7 +86,7 @@ class Worcker:
         result = obj_worcker.show_worckers()
         ls = ["имя: ", "фамилия: "]
         for row in result:
-            print(ls[0], str(row[0]) + '\n' + str(ls[1]), row[1])
+            print(ls[0], str(row[0]) + "\n" + str(ls[1]), row[1])
 
     def change_prof(self):
         self.check()
@@ -85,9 +96,24 @@ class Worcker:
         obj_worcker.change_worcker_profession(profession)
         print("Профессия успешно изменена")
 
+    def get_prof(self):
+        obj_worcker = Worckers(id=self.id, name=self.name, first_name=self.first_name)
+        return obj_worcker.get_prof()
+
     def del_worcker(self):
+        from my_test_db_professions import Professions
+
         self.check()
-        obj_worcker = Worckers(self.id, name=self.name, first_name=self.first_name)
+        obj_worcker = Worckers(id=self.id, name=self.name, first_name=self.first_name)
+        obj_prof = Professions()
+        prof = self.get_prof()
+        amounts = obj_prof.get_amount(prof[0])
+
+        if amounts:
+            amount = int(amounts[0]) - 1
+        else:
+            amount = 0
+        obj_prof.change_amount(amount, prof[0])
         obj_worcker.del_worcker()
         print("Работник удален")
 

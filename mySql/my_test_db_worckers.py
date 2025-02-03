@@ -56,6 +56,20 @@ class Worckers:
         self.cursor.execute(query)
         return self.cursor
 
+
+    def get_prof(self):
+        if self.id:
+            query = """SELECT profession FROM worckers WHERE id=%s"""
+            self.cursor.execute(query, (self.id, ))
+            for row in self.cursor:
+                return row
+        elif self.name and self.first_name:
+            query = """SELECT profession FROM worckers WHERE name=%s AND first_name=%s"""
+            self.cursor.execute(query, (self.name, self.first_name))
+            for row in self.cursor:
+                return row[0]
+        
+
     # change worcker's profession
     def change_worcker_profession(
         self, profession=None

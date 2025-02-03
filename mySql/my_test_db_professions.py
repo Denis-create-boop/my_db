@@ -42,9 +42,10 @@ class Professions:
         for row in self.cursor:
             return row
         
+
     def change_amount(self, amount, prof):
         query = """UPDATE professions SET amount=%s WHERE profession=%s"""
-        self.cursor.execute(query, (amount, prof))
+        self.cursor.execute(query, (amount, prof,))
         db.commit()
 
     # смотрим все что есть в таблице
